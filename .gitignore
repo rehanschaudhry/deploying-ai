@@ -8,6 +8,7 @@ wheels/
 .deepeval_telemetry.txt
 .DS_Store
 **/.deepeval/*
+.devcontainer-logs/
 
 # Virtual environments
 .venv
