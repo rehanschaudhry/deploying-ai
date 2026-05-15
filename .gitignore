@@ -28,3 +28,6 @@ deploying-ai-env
 *.jsonl
 *.htm
 *.txt
+
+!rag_assistant/requirements.txt
+!rag_assistant/requirements-lock.txt
