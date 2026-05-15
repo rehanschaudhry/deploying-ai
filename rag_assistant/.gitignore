@@ -27,3 +27,4 @@ mflow.db
 mlflow.db
 parsed_notebooks/
 file_inventory.json
+parsed_pdfs/
