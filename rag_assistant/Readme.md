@@ -1,14 +1,14 @@
 # DSI RAG Assistant
 
 ## What This Is
-The objective of this project is to build a Retrieval-Augmented Generation (RAG) assistant that can ingest various types of documents, chunk them effectively, and use a vector database to enable efficient retrieval for question-answering tasks. The system will be designed to handle different file formats, preserve metadata.
+The objective of this project is to build a Retrieval-Augmented Generation (RAG) assistant that can ingest various types of documents, chunk them effectively, and use a vector database to enable efficient retrieval for question-answering tasks. The system parses the source files into structured chunks, stores them in a vector database, and answers natural-language questions about the course content with citations back to the original sources.
 
 ## Current Status
-Deploying AI was the course I was taking from DSI, and I wanted to showcase what I learned in the course by building a RAG assistant. I have so far built a parser for Jupyter notebooks, PDFs, Python files, and markdown files to extract text content and relevant metadata.
+This is a personal project tied to my completion of the DSI Deploying AI course. Phase 1 (document ingestion: parsing files into structured JSON) is complete. See the Project Roadmap below for the full plan and progress.
 
 ## Architecture
 The architecture of the RAG assistant consists of several key components:
-1. **Document Ingestion**: This component is responsible for parsing various document formats and extracting the content and metadata. Within the documents, I am extracting the text content and relevant metadata from juypter notebooks, PDFs, python files and markdown files. I have implemented a one-parser-per-file-type strategy to ensure that the unique characteristics of each file format are handled appropriately. This allows for more accurate extraction and better preservation of metadata, which is crucial for effective retrieval later on.
+1. **Document Ingestion**: This component is responsible for parsing various document formats and extracting the content and metadata. I have implemented a one-parser-per-file-type strategy to ensure that the unique characteristics of each file format are handled appropriately. This allows for more accurate extraction and better preservation of metadata, which is crucial for effective retrieval later on.
 2. **Chunking**: This component breaks down the extracted content into smaller, manageable pieces (chunks) that can be stored in the vector database. The chunking strategy is designed to balance the size of the chunks with the amount of context preserved, which is important for ensuring that retrieved information is relevant and useful for answering user queries.
 3. **Vector Database**: The chunked content will be stored in ChromaDB, which allows for efficient retrieval based on vector similarity. Each chunk is associated with its metadata to enable context-aware retrieval. 
 4. **Query Interface**: This component allows users to input questions and retrieves relevant chunks from ChromaDB to generate answers. The retrieval process takes into account the metadata to ensure that the most relevant information is returned.
@@ -47,6 +47,15 @@ The full project plan is 14 steps. Here's where I am:
 - [ ] Step 13: Chunk size experiments (256 vs 512 vs 1024)
 - [ ] Step 14: MLflow registry for v1.0
 
+### Future Work (Beyond Phase 1)
+- [ ] Wrap retrieval as an MCP (Model Context Protocol) server so the
+      course content can be queried from Claude Desktop or other
+      MCP-compatible clients
+- [ ] Add agentic capabilities to retrieval — multi-step search,
+      clarifying questions when queries are ambiguous, query refinement
+- [ ] Public hosting (Hugging Face Spaces or similar free-tier platform)
+- [ ] Simple UI for non-technical users
+
 ## Project Structure
 rag_assistant/
 ├── scripts/
@@ -79,8 +88,8 @@ rag_assistant/
 7. Verify that the parsed content and metadata are correctly stored in the respective directories (`parsed_notebooks/`, `parsed_pdfs/`, `parsed_python/`, `parsed_markdown/`).
 
 ## Key Decisions so Far
-- **Choice of Vector Database**: The reason why I chose ChromaDB was it was taughted in the course and wanted to showcase what I learned in the course. ChromaDB is a powerful vector database that allows for efficient storage and retrieval of high-dimensional data, which is essential for the RAG assistant to function effectively. It provides robust support for similarity search, which is crucial for retrieving relevant chunks of information based on user queries.
-- **MLflow Integration**: Even though we did not learn MLflow in the class, MLflow is wildly popular experimental tracking tool that was developed by Databricks. I just does not track experiments but also allows you to manage the lifecycle of your machine learning models, which is crucial for a project like this where we are continuously improving the RAG assistant based on user interactions and performance metrics. Recently they have also track LLM experiments which is relevant to this project. [x]
+- **Choice of Vector Database**: The reason why I chose ChromaDB was it was taught in the course and wanted to showcase what I learned in the course. ChromaDB is a powerful vector database that allows for efficient storage and retrieval of high-dimensional data, which is essential for the RAG assistant to function effectively. It provides robust support for similarity search, which is crucial for retrieving relevant chunks of information based on user queries.
+- **MLflow Integration**: Even though we did not learn MLflow in the class, MLflow is widely popular experimental tracking tool that was developed by Databricks. It not only track experiments but also allows you to manage the lifecycle of your machine learning models, which is crucial for a project like this where we are continuously improving the RAG assistant based on user interactions and performance metrics. Recently they have also track LLM experiments which is relevant to this project. 
 - **One-Parser-Per-File-Type Strategy**: I decided to implement a separate parser for each file type to ensure that the unique characteristics of each format are handled appropriately, leading to more accurate extraction and better preservation of metadata.
 
 ## What I Learned
@@ -111,4 +120,4 @@ The experience made clear the value of using a lock file (e.g., requirements-loc
 Adopting a locked dependency strategy would improve reproducibility across development, CI, and cloud environments such as Codespaces, and reduce time spent debugging environment-related inconsistencies.
 
 ### Things that surprised me
-The things that surprised me the most is what I predicted how many characters would be produced after parsing the PDFs. I expected to get a lot more text content out of the PDF , but I was surprised to find that the actual amount of extracted text was much less than I anticipated. This was due to the fact that both PDFs can contain a lot of non-text elements (like images, code cells, and formatting) that do not contribute to the text content. Additionally, the structure of these documents can make it challenging to extract meaningful text without losing important context or metadata. This experience highlighted the importance of having a robust parsing strategy that can effectively handle different document formats while preserving relevant information for downstream tasks like chunking and retrieval. 
+The things that surprised me the most is what I predicted how many characters would be produced after parsing the PDFs. I expected to get a lot more text content out of the PDF , but I was surprised to find that the actual amount of extracted text was much less than I anticipated. This was due to the fact that he structure of these documents (slides with images, embedded code blocks, complex layouts) means a lot of the visual content isn't extractable as text that do not contribute to the text content. Additionally, the structure of these documents can make it challenging to extract meaningful text without losing important context or metadata. This experience highlighted the importance of having a robust parsing strategy that can effectively handle different document formats while preserving relevant information for downstream tasks like chunking and retrieval. 
