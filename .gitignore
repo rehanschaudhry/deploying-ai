@@ -8,6 +8,7 @@ wheels/
 .deepeval_telemetry.txt
 .DS_Store
 **/.deepeval/*
+.devcontainer-logs/
 
 # Virtual environments
 .venv
@@ -27,3 +28,6 @@ deploying-ai-env
 *.jsonl
 *.htm
 *.txt
+
+!rag_assistant/requirements.txt
+!rag_assistant/requirements-lock.txt

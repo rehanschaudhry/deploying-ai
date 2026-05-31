@@ -1,0 +1,32 @@
+﻿# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Secrets
+.env
+
+# MLflow local data
+mlruns/
+mlartifacts/
+
+# ChromaDB local data
+chroma_db/
+
+# Lock file we DO want to commit, but ignore pip's cache
+.pip-cache/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store
+mflow.db
+mlflow.db
+parsed_notebooks/
+file_inventory.json
+parsed_pdfs/
+.devcontainer-logs/
+chunks/
